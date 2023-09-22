@@ -2,15 +2,18 @@ from googleapiclient.discovery import build
 import json
 import urllib.request
 from helper.youtube_api_manual import youtube
-
+import os
 
 class Channel:
     """Класс для ютуб-канала"""
 
-    def __init__(self,api_key, channel_id: str) -> None:
+    api_key = os.getenv('YT_API_KEY')
+
+    def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
+        self.api_key = Channel.api_key
         self.__channel_id = channel_id
-        service = build('youtube', 'v3', developerKey=api_key)
+        service = build('youtube', 'v3', developerKey=self.api_key)
         request = service.channels().list(id=channel_id, part = 'snippet,statistics')
         response = request.execute()
         #response_dict = json.load(response)
@@ -25,6 +28,76 @@ class Channel:
         request = youtube.search().list(part="snippet", channelId=self.channel_id, maxResults=10, type="video")
         response = request.execute()
         return response
+
+    def __str__(self):
+        return (f"Название канала:{self.title}.\nОписание канала: {self.description}"
+                f" ,\nКоличество подписчиков: {self.subscriberCount},\nКоличество видео на канале: {self.video_count},\n"
+                f"Количество просмотров на канале: {self.viewCount}.")
+
+    def __add__(self, other_id):
+        """Суммарное количество просмотров двух каналов"""
+        subscriberCount_1 = self.subscriberCount
+        service = build('youtube', 'v3', developerKey=self.api_key)
+        request_2 = service.channels().list(id=other_id, part='snippet,statistics')
+        response_2 = request_2.execute()
+        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
+        return subscriberCount_1 + subscriberCount_2
+
+    def __sub__(self, other_id):
+        """Разница количества просмотров двух каналов"""
+        subscriberCount_1 = self.subscriberCount
+        service = build('youtube', 'v3', developerKey=self.api_key)
+        request_2 = service.channels().list(id=other_id, part='snippet,statistics')
+        response_2 = request_2.execute()
+        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
+        return subscriberCount_1 - subscriberCount_2
+
+
+    def __eq__(self, other_id):
+        """Сравнение на равенство"""
+        subscriberCount_1 = self.subscriberCount
+        service = build('youtube', 'v3', developerKey=self.api_key)
+        request_2 = service.channels().list(id=other_id, part='snippet,statistics')
+        response_2 = request_2.execute()
+        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
+        return subscriberCount_1 == subscriberCount_2
+
+    def __lt__(self, other_id):
+        """Сравнение операторов (меньше)"""
+        subscriberCount_1 = self.subscriberCount
+        service = build('youtube', 'v3', developerKey=self.api_key)
+        request_2 = service.channels().list(id=other_id, part='snippet,statistics')
+        response_2 = request_2.execute()
+        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
+        return subscriberCount_1 < subscriberCount_2
+
+    def __le__(self, other_id):
+        """Сравнение операторов (меньше или равно)"""
+        subscriberCount_1 = self.subscriberCount
+        service = build('youtube', 'v3', developerKey=self.api_key)
+        request_2 = service.channels().list(id=other_id, part='snippet,statistics')
+        response_2 = request_2.execute()
+        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
+        return subscriberCount_1 <= subscriberCount_2
+
+    def __gt__(self, other_id):
+        """Сравнение операторов (больше)"""
+        subscriberCount_1 = self.subscriberCount
+        service = build('youtube', 'v3', developerKey=self.api_key)
+        request_2 = service.channels().list(id=other_id, part='snippet,statistics')
+        response_2 = request_2.execute()
+        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
+        return subscriberCount_1 > subscriberCount_2
+
+    def __ge__(self, other_id):
+        """Сравнение операторов (больше или равно)"""
+        subscriberCount_1 = self.subscriberCount
+        service = build('youtube', 'v3', developerKey=self.api_key)
+        request_2 = service.channels().list(id=other_id, part='snippet,statistics')
+        response_2 = request_2.execute()
+        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
+        return subscriberCount_1 >= subscriberCount_2
+
 
     @classmethod
     def get_service(cls, api_key):
