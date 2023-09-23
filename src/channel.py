@@ -34,62 +34,51 @@ class Channel:
                 f" ,\nКоличество подписчиков: {self.subscriberCount},\nКоличество видео на канале: {self.video_count},\n"
                 f"Количество просмотров на канале: {self.viewCount}.")
 
-    def __add__(self, other_id):
+
+
+    def __add__(self, other):
         """Суммарное количество просмотров двух каналов"""
         subscriberCount_1 = self.subscriberCount
-        request_2 = self.__service.channels().list(id=other_id, part='snippet,statistics')
-        response_2 = request_2.execute()
-        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
-        return subscriberCount_1 + subscriberCount_2
+        subscriberCount_2 = other.subscriberCount
+        return int(subscriberCount_1) + int(subscriberCount_2)
 
-    def __sub__(self, other_id):
+
+    def __sub__(self, other):
         """Разница количества просмотров двух каналов"""
         subscriberCount_1 = self.subscriberCount
-        request_2 = self.__service.channels().list(id=other_id, part='snippet,statistics')
-        response_2 = request_2.execute()
-        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
-        return subscriberCount_1 - subscriberCount_2
+        subscriberCount_2 = other.subscriberCount
+        return int(subscriberCount_1) - int(subscriberCount_2)
 
 
-    def __eq__(self, other_id):
+    def __eq__(self, other):
         """Сравнение на равенство"""
         subscriberCount_1 = self.subscriberCount
-        request_2 = self.__service.channels().list(id=other_id, part='snippet,statistics')
-        response_2 = request_2.execute()
-        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
-        return subscriberCount_1 == subscriberCount_2
+        subscriberCount_2 = other.subscriberCount
+        return int(subscriberCount_1) == int(subscriberCount_2)
 
-    def __lt__(self, other_id):
+    def __lt__(self, other):
         """Сравнение операторов (меньше)"""
         subscriberCount_1 = self.subscriberCount
-        request_2 = self.__service.channels().list(id=other_id, part='snippet,statistics')
-        response_2 = request_2.execute()
-        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
+        subscriberCount_2 = other.subscriberCount
         return subscriberCount_1 < subscriberCount_2
 
-    def __le__(self, other_id):
+    def __le__(self, other):
         """Сравнение операторов (меньше или равно)"""
         subscriberCount_1 = self.subscriberCount
-        request_2 = self.__service.channels().list(id=other_id, part='snippet,statistics')
-        response_2 = request_2.execute()
-        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
-        return subscriberCount_1 <= subscriberCount_2
+        subscriberCount_2 = other.subscriberCount
+        return int(subscriberCount_1) <= int(subscriberCount_2)
 
-    def __gt__(self, other_id):
+    def __gt__(self, other):
         """Сравнение операторов (больше)"""
         subscriberCount_1 = self.subscriberCount
-        request_2 = self.__service.channels().list(id=other_id, part='snippet,statistics')
-        response_2 = request_2.execute()
-        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
-        return subscriberCount_1 > subscriberCount_2
+        subscriberCount_2 = other.subscriberCount
+        return int(subscriberCount_1) > int(subscriberCount_2)
 
-    def __ge__(self, other_id):
+    def __ge__(self, other):
         """Сравнение операторов (больше или равно)"""
         subscriberCount_1 = self.subscriberCount
-        request_2 = self.__service.channels().list(id=other_id, part='snippet,statistics')
-        response_2 = request_2.execute()
-        subscriberCount_2 = response_2["items"][0]["statistics"]["subscriberCount"]
-        return subscriberCount_1 >= subscriberCount_2
+        subscriberCount_2 = other.subscriberCount
+        return int(subscriberCount_1) >= int(subscriberCount_2)
 
 
     @classmethod
