@@ -4,6 +4,7 @@ import urllib.request
 from helper.youtube_api_manual import youtube
 import os
 
+
 class Channel:
     """Класс для ютуб-канала"""
 
@@ -14,9 +15,8 @@ class Channel:
         self.api_key = Channel.api_key
         self.__channel_id = channel_id
         self.__service = build('youtube', 'v3', developerKey=self.api_key)
-        request = self.__service.channels().list(id=channel_id, part = 'snippet,statistics')
+        request = self.__service.channels().list(id=channel_id, part='snippet,statistics')
         response = request.execute()
-        #response_dict = json.load(response)
         self.title = response["items"][0]["snippet"]["title"]
         self.description = response["items"][0]["snippet"]["description"]
         self.url = f'https://www.youtube.com/channel/{channel_id}'
@@ -34,21 +34,17 @@ class Channel:
                 f" ,\nКоличество подписчиков: {self.subscriberCount},\nКоличество видео на канале: {self.video_count},\n"
                 f"Количество просмотров на канале: {self.viewCount}.")
 
-
-
     def __add__(self, other):
         """Суммарное количество просмотров двух каналов"""
         subscriberCount_1 = self.subscriberCount
         subscriberCount_2 = other.subscriberCount
         return int(subscriberCount_1) + int(subscriberCount_2)
 
-
     def __sub__(self, other):
         """Разница количества просмотров двух каналов"""
         subscriberCount_1 = self.subscriberCount
         subscriberCount_2 = other.subscriberCount
         return int(subscriberCount_1) - int(subscriberCount_2)
-
 
     def __eq__(self, other):
         """Сравнение на равенство"""
@@ -80,13 +76,12 @@ class Channel:
         subscriberCount_2 = other.subscriberCount
         return int(subscriberCount_1) >= int(subscriberCount_2)
 
-
     @classmethod
     def get_service(cls, api_key):
         service = build('youtube', 'v3', developerKey=api_key)
         return service
 
-    def to_json(self,name_file):
+    def to_json(self, name_file):
         id = self.__channel_id
         Title = self.title
         description = self.description
@@ -94,6 +89,7 @@ class Channel:
         subscribe = self.subscriberCount
         video_count = self.video_count
         viewCount = self.viewCount
-        mydict = {"id":id ,"title": Title, "description": description,"url":url,"subscribe":subscribe,"video_count":video_count,"viewCount":viewCount}
+        mydict = {"id": id, "title": Title, "description": description, "url": url, "subscribe": subscribe,
+                  "video_count": video_count, "viewCount": viewCount}
         with open(name_file, "w") as file:
-            json.dump(mydict,file)
+            json.dump(mydict, file)
