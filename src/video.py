@@ -6,9 +6,10 @@ from googleapiclient.discovery import build
 import isodate
 
 from helper.youtube_api_manual import youtube
+from src.APIMixin import APIMixin
 
 
-class Video():
+class Video(APIMixin):
 
     def __init__(self, video_id):
         self.video_id = video_id

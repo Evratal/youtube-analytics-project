@@ -4,13 +4,13 @@ from googleapiclient.discovery import build
 from helper.youtube_api_manual import youtube
 import os
 
-
-class StartYoutube():
-    api_key = os.getenv('YT_API_KEY')
-    service = build('youtube', 'v3', developerKey=api_key)
+from src.APIMixin import APIMixin
 
 
-class PlayList(StartYoutube):
+
+
+
+class PlayList(APIMixin):
     def __init__(self, playlist_id):
         self.__playlist_id = playlist_id
         self.playlist_videos = youtube.playlistItems().list(playlistId=self.__playlist_id,

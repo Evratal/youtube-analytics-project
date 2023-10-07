@@ -4,8 +4,10 @@ import urllib.request
 from helper.youtube_api_manual import youtube
 import os
 
+from src.APIMixin import APIMixin
 
-class Channel:
+
+class Channel(APIMixin):
     """Класс для ютуб-канала"""
 
     api_key = os.getenv('YT_API_KEY')
@@ -76,10 +78,6 @@ class Channel:
         subscriberCount_2 = other.subscriberCount
         return int(subscriberCount_1) >= int(subscriberCount_2)
 
-    @classmethod
-    def get_service(cls, api_key):
-        service = build('youtube', 'v3', developerKey=api_key)
-        return service
 
     def to_json(self, name_file):
         id = self.__channel_id
