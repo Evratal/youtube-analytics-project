@@ -7,9 +7,6 @@ import os
 from src.APIMixin import APIMixin
 
 
-
-
-
 class PlayList(APIMixin):
     def __init__(self, playlist_id):
         self.__playlist_id = playlist_id
